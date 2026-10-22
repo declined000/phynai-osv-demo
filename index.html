@@ -244,6 +244,113 @@
  .transport .icon-button{min-width:32px;min-height:40px}
 }
 
+
+/* Apply mobile card layout — 2026-10-22 */
+@media screen and (max-width: 650px) {
+  #apply {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    height: 100%;
+    min-height: 0;
+    gap: 16px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-bottom: 24px;
+  }
+  #apply .heading { flex: 0 0 auto; gap: 10px; }
+  #apply .applications {
+    display: grid;
+    flex: 0 0 auto;
+    width: 100%;
+    height: auto;
+    max-height: none;
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-auto-rows: max-content;
+    align-content: start;
+    align-items: stretch;
+    gap: 16px;
+  }
+  #apply .application {
+    display: grid;
+    grid-template-columns: minmax(0, 40%) minmax(0, 1fr);
+    grid-template-rows: max-content auto;
+    column-gap: 14px;
+    row-gap: 5px;
+    min-height: 136px;
+    height: auto;
+    align-content: center;
+  }
+  #apply .application-image {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    position: relative;
+    align-self: stretch;
+    height: 100%;
+    min-height: 136px;
+    min-width: 0;
+  }
+  #apply .application-image img,
+  #apply .application-image video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  #apply .application:nth-child(5) .application-image img { object-fit: cover; }
+  #apply .application-image span {
+    max-width: calc(100% - 10px);
+    left: 5px;
+    bottom: 5px;
+    padding: 3px 4px;
+    font-size: 9px;
+    line-height: 1.25;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  #apply .application h2 {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: end;
+    margin: 0;
+    font-size: 19px;
+    line-height: 1.16;
+    overflow-wrap: anywhere;
+  }
+  #apply .application p {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: start;
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+  #apply .closing {
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px;
+    margin: 12px 0 0;
+    padding: 0;
+  }
+  #apply .closing p {
+    flex: 1 1 185px;
+    font-size: clamp(18px, 5vw, 23px);
+  }
+  #apply .closing > span { flex: 0 0 auto; margin-left: auto; }
+  #apply .scene-note {
+    flex: 0 0 auto;
+    margin: 0;
+    padding-bottom: 12px;
+  }
+}
+
 </style></head><body>
 <header class="mast"><button class="brand" data-go="0" aria-label="Phynai, return to opening">phynai</button><nav aria-label="Presentation chapters"><button data-go="0">Question</button><button data-go="1">Listen</button><button data-go="3">Predict</button><button data-go="5">Steer</button><button data-go="6">Loop</button><button data-go="7">Apply</button></nav><div class="mast-actions"><button id="tour">Play 7 min ▷</button><button id="evidence-open">Evidence</button><button id="fullscreen" class="icon-button" aria-label="Toggle full screen">⛶</button></div></header>
 <main id="stage">
