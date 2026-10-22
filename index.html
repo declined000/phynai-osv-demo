@@ -185,6 +185,65 @@
  #listen-map .listen-flow-layout{grid-template-rows:minmax(70px,.6fr) minmax(195px,1.4fr);gap:8px}
 }
 @media(prefers-reduced-motion:reduce){.hero-sequence li,.hero-sequence li span,.hero-sequence li:after,.flow-process li,.flow-process li:after{transition:none}}
+/* Phone-only layout: let labels wrap without colliding or clipping markers. */
+@media (max-width:650px) {
+ :root{--pad:16px}
+ .scene{overflow-y:auto;overflow-x:hidden;overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch}
+ .scene>*{flex-shrink:0;min-width:0}
+ .heading>div,.panel-top>span{min-width:0}
+ .heading h1,#arcos .heading h1{font-size:clamp(25px,7.5vw,30px)}
+ .forecast-result-block{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+ .forecast-result-block .badge{order:0;justify-self:start;white-space:normal}
+ .forecast-result{width:100%;min-width:0;gap:16px}
+ .forecast-result>strong{flex:0 0 auto;min-width:0;font-size:46px;letter-spacing:-1px}
+ .forecast-result-copy{flex:1 1 0;min-width:0;gap:4px}
+ .forecast-result-copy>span{font-size:15px}
+ .forecast-result-copy>small{font-size:11px;line-height:1.3}
+ .prediction-pair{grid-template-columns:repeat(2,minmax(0,1fr));min-height:240px}
+ .result-panel{min-width:0}
+ .result-panel .panel-top{flex-wrap:wrap;gap:5px;min-height:66px}
+ .result-panel .panel-top strong{flex-shrink:0}
+ .result-panel canvas{height:auto;min-height:140px}
+ .panel-bottom{line-height:1.4}
+ #arcos .prediction-sequence{gap:24px;flex-wrap:wrap;row-gap:8px}
+ #arcos .prediction-sequence span{font-size:11px}
+ .forecast-summary p{text-align:left}
+ .scene-note{align-items:flex-start;flex-wrap:wrap;gap:6px;line-height:1.45}
+ .scene-note span:first-child,.scene-note span:last-child{max-width:100%;text-align:left}
+ #listen-map .listen-flow-layout{grid-template-rows:minmax(130px,.6fr) minmax(330px,1.4fr);min-height:470px}
+ #listen-map .flow-model-top{flex-wrap:wrap;gap:6px 12px}
+ #listen-map .flow-model-top .steps{gap:22px}
+ #listen-map .flow-view{min-height:140px}
+ .flow-process{flex:0 0 auto;min-height:150px;margin:0 10px 8px;padding:6px 0;overflow:visible}
+ .flow-process ol{height:auto}
+ .flow-process li{display:none;position:relative;left:auto;right:auto;top:auto;min-height:0;padding:0 6px 0 26px;margin:0 0 8px;transform:none;line-height:1.35}
+ .flow-process li.current,.flow-process li.completed{display:block;transform:none}
+ .flow-process li:before{left:8px;top:.54em}
+ .flow-process li:after{left:10.5px;top:calc(.54em + 3px);height:calc(100% + 8px)}
+ .flow-process .step-full{font-size:14px;line-height:1.35}
+ .flow-process .step-short{font-size:12px;line-height:1.35}
+ .hero-sequence{padding-left:6px;width:calc(100vw - 2 * var(--pad));--active-height:3.2em}
+ .hero-sequence li{left:28px}
+ .listen-layout{min-height:300px}
+ .listen-copy{flex-wrap:wrap;gap:10px}
+ .listen-copy .story{max-width:100%}
+ .steer-grid{min-height:390px}
+ .hardware-loop{min-height:340px}
+ .hardware-node{height:30%;padding:8px 5px}
+ .hardware-node h2{font-size:18px}
+ .hardware-node p{font-size:11px}
+ .hardware-node>span{font-size:9px;overflow-wrap:anywhere}
+ .loop-live strong{font-size:14px}
+ #apply{grid-template-rows:auto auto auto auto}
+ #apply .applications{height:auto;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:none;grid-auto-rows:auto}
+ #apply .application{grid-template-rows:120px max-content auto}
+ #apply .closing{flex-wrap:wrap}
+ .chapter-position{min-width:0;gap:6px}
+ #page-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;margin-left:4px}
+ .transport-actions{flex-shrink:0;gap:8px}
+ .transport .icon-button{min-width:32px;min-height:40px}
+}
+
 </style></head><body>
 <header class="mast"><button class="brand" data-go="0" aria-label="Phynai, return to opening">phynai</button><nav aria-label="Presentation chapters"><button data-go="0">Question</button><button data-go="1">Listen</button><button data-go="3">Predict</button><button data-go="5">Steer</button><button data-go="6">Loop</button><button data-go="7">Apply</button></nav><div class="mast-actions"><button id="tour">Play 7 min ▷</button><button id="evidence-open">Evidence</button><button id="fullscreen" class="icon-button" aria-label="Toggle full screen">⛶</button></div></header>
 <main id="stage">
@@ -346,8 +405,8 @@ function openEvidence(){evidenceWasPaused=paused;paused=true;syncMedia();$('evid
 $('evidence-open').onclick=openEvidence;$('evidence-close').onclick=()=>$('evidence').close();$('evidence').addEventListener('close',()=>{paused=evidenceWasPaused;syncMedia();last=performance.now()});$('evidence').addEventListener('click',e=>{if(e.target===$('evidence')){let r=e.target.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)e.target.close()}});
 $$('[data-experiment]').forEach(c=>{c.onclick=()=>setExperiment(Number(c.dataset.experiment));c.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();setExperiment(Number(c.dataset.experiment))}}});
 window.addEventListener('keydown',e=>{if($('evidence').open||e.ctrlKey||e.metaKey||e.altKey)return;if(e.target.closest('button,a,input,select,textarea')&&['Enter',' '].includes(e.key))return;if(['ArrowDown','ArrowRight','PageDown'].includes(e.key)){e.preventDefault();go(index+1)}else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(index-1)}else if(e.key===' '){e.preventDefault();togglePause()}else if(e.key==='Home'){go(0)}else if(e.key==='End'){go(scenes.length-1)}else if(e.key.toLowerCase()==='f')$('fullscreen').click()});
-window.addEventListener('wheel',e=>{if($('evidence').open||e.ctrlKey||Math.abs(e.deltaX)>Math.abs(e.deltaY))return;e.preventDefault();const now=performance.now(),quiet=now-gestureLast>160;gestureLast=now;if(now-wheelTime<850){wheelAmount=0;return}if(quiet)wheelAmount=0;wheelAmount+=e.deltaY;if(Math.abs(wheelAmount)>45){wheelTime=now;go(index+Math.sign(wheelAmount));wheelAmount=0}},{passive:false});
-window.addEventListener('touchstart',e=>{if(!$('evidence').open&&e.touches.length===1)touchY=e.touches[0].clientY},{passive:true});window.addEventListener('touchend',e=>{if(touchY===null||$('evidence').open)return;const dy=touchY-e.changedTouches[0].clientY;touchY=null;if(Math.abs(dy)>55)go(index+Math.sign(dy))},{passive:true});
+window.addEventListener('wheel',e=>{if(matchMedia('(max-width:650px)').matches&&e.target.closest('.scene')&&scenes[index].scrollHeight>scenes[index].clientHeight+1)return;if($('evidence').open||e.ctrlKey||Math.abs(e.deltaX)>Math.abs(e.deltaY))return;e.preventDefault();const now=performance.now(),quiet=now-gestureLast>160;gestureLast=now;if(now-wheelTime<850){wheelAmount=0;return}if(quiet)wheelAmount=0;wheelAmount+=e.deltaY;if(Math.abs(wheelAmount)>45){wheelTime=now;go(index+Math.sign(wheelAmount));wheelAmount=0}},{passive:false});
+window.addEventListener('touchstart',e=>{if(!$('evidence').open&&e.touches.length===1)touchY=e.touches[0].clientY},{passive:true});window.addEventListener('touchend',e=>{if(touchY===null||$('evidence').open)return;const dy=touchY-e.changedTouches[0].clientY;touchY=null;if(matchMedia('(max-width:650px)').matches&&scenes[index].scrollHeight>scenes[index].clientHeight+1)return;if(Math.abs(dy)>55)go(index+Math.sign(dy))},{passive:true});
 // Click/tap advances the current explanation without stopping autoplay or the tour.
 function advanceStep(){
  const id=scenes[index].id;
